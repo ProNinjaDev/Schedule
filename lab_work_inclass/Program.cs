@@ -24,19 +24,25 @@ namespace lab_work_inclass
             numTermRooms = 1;
 
             List<Lectoriy> lectories = new List<Lectoriy>();
-
             for (int i = 0; i < numLectRooms; i++)
             {
-                lectories.Add(new Lectoriy(i));
+                lectories.Add(new Lectoriy(i + 1));
             }
 
             List<Terminal> terminals = new List<Terminal>();
             for (int i = 0; i < numTermRooms; i++)
             {
-                terminals.Add(new Terminal(i));
+                terminals.Add(new Terminal(i + 1));
             }
 
-            
+            // todo: Заполнить subjects и перенести в отдельный метод (или даже класс)
+            List<Subject> subjects = new List<Subject>();
+
+            List<Group> groups = new List<Group>();
+            for (int i = 0;i < numGroups; i++)
+            {
+                //groups.Add(new Group(i + 1, ))
+            }
 
         }
     }

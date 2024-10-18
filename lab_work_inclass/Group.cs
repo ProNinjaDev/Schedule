@@ -25,5 +25,21 @@ namespace lab_work_inclass
                 RemainingPractices[subject] = subject.numPractices;
             }
         }
+
+        public void AssignLecture(Subject subject)
+        {
+            if (RemainingLectures[subject] > 0)
+            {
+                RemainingLectures[subject]--;
+            }
+        }
+
+        public void AssignPractice(Subject subject)
+        {
+            if (RemainingPractices[subject] > 0)
+            {
+                RemainingPractices[subject]--;
+            }
+        }
     }
 }

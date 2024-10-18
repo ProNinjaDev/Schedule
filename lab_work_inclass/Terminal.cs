@@ -25,5 +25,10 @@ namespace lab_work_inclass
                 }
             }
         }
+
+        public bool IsAvailable (int day, int pair)
+        {
+            return !Employment[day][pair];
+        }
     }
 }

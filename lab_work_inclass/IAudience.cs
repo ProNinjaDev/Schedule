@@ -9,6 +9,6 @@ namespace lab_work_inclass
     internal interface IAudience
     {
         int Number { get; }
-        List<List<bool>> Employment { get; }
+        List<List<bool>> Employment { get; set; }
     }
 }
