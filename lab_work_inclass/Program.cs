@@ -15,10 +15,10 @@ namespace lab_work_inclass
         static void Main(string[] args)
         {
             int numGroups = 3;
-            int numSubjects = 10;
-            int numLections = 10;
-            int numPractics = 5;
-            int numRemainingsPairs = 4;
+            int numSubjects = 10; // todo: Возможно, уже не нужен
+            int numLections = 10; // todo: Возможно, уже не нужен
+            int numPractics = 5; // todo: Возможно, уже не нужен
+            int numRemainingsPairs = 4; // todo: Возможно, уже не нужен
             int numLectRooms = 2;
             int numTermRooms = 1;
 
@@ -26,6 +26,10 @@ namespace lab_work_inclass
             List<Terminal> terminals = InitializeTerminals(numTermRooms);
             List<Subject> subjects = InitializeSubjects();
             List<Group> groups = InitializeGroups(numGroups, subjects);
+
+            AllocMilitaryDepartment(groups);
+
+
         }
 
         static List<Lectoriy> InitializeLectories(int numLectRooms)
@@ -73,6 +77,39 @@ namespace lab_work_inclass
                 groups.Add(new Group(i + 1, subjects));
             }
             return groups;
+        }
+
+        static void AllocMilitaryDepartment(List<Group> groups)
+        {
+            int availableDays = NUMDAYS;
+
+            foreach(var group in groups)
+            {
+                group.AssignMilitaryDay(availableDays - 1);
+                availableDays--;
+            }
+        }
+
+        static void AllocLecturesAndPractices(List<Group> groups)
+        {
+            for(int day = 0; day < NUMDAYS; day++)
+            {
+                Random rnd = new Random();
+                List<int> priorities = new List<int>();
+                int priority;
+                for (int i = 0; i < groups.Count; i++)
+                {
+                    do priority = rnd.Next(groups.Count);
+                    while (priorities.Contains(priority));
+
+                    priorities.Add(priority);
+                }
+
+                for(int pair = 0; pair < NUMPAIRS; pair++)
+                {
+                    // todo: Раскидать пары приоритетным группам
+                }
+            }
         }
     }
 }

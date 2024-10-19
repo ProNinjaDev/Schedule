@@ -11,7 +11,6 @@ namespace lab_work_inclass
         public int Number { get; }
         public List<List<bool>> Employment { get; set; }
 
-
         public Lectoriy(int number)
         {
             this.Number = number;
@@ -31,11 +30,5 @@ namespace lab_work_inclass
         {
             return !Employment[day][pair];
         }
-
-        
-
-
-
-
     }
 }
