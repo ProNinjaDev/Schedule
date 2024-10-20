@@ -12,13 +12,13 @@ namespace lab_work_inclass
     {
         internal const int NUMDAYS = 7;
         internal const int NUMPAIRS = 6;
+        internal const int MAXPAIRS = 4;
         static void Main(string[] args)
         {
             int numGroups = 3;
             int numSubjects = 10; // todo: Возможно, уже не нужен
             int numLections = 10; // todo: Возможно, уже не нужен
             int numPractics = 5; // todo: Возможно, уже не нужен
-            int numRemainingsPairs = 4; // todo: Возможно, уже не нужен
             int numLectRooms = 2;
             int numTermRooms = 1;
 
@@ -28,8 +28,7 @@ namespace lab_work_inclass
             List<Group> groups = InitializeGroups(numGroups, subjects);
 
             AllocMilitaryDepartment(groups);
-
-
+            AllocLecturesAndPractices(groups, lectories, terminals);
         }
 
         static List<Lectoriy> InitializeLectories(int numLectRooms)
@@ -90,15 +89,16 @@ namespace lab_work_inclass
             }
         }
 
-        static void AllocLecturesAndPractices(List<Group> groups)
+        static void AllocLecturesAndPractices(List<Group> groups, List<Lectoriy> lectories, List<Terminal> terminals)
         {
             for(int day = 0; day < NUMDAYS; day++)
             {
+                // todo: Изменить способ расстановки приоритетов
                 Random rnd = new Random();
                 List<int> priorities = new List<int>();
-                int priority;
                 for (int i = 0; i < groups.Count; i++)
                 {
+                    int priority;
                     do priority = rnd.Next(groups.Count);
                     while (priorities.Contains(priority));
 
@@ -108,6 +108,41 @@ namespace lab_work_inclass
                 for(int pair = 0; pair < NUMPAIRS; pair++)
                 {
                     // todo: Раскидать пары приоритетным группам
+
+                    foreach(var indGroupPriority in priorities)
+                    {
+                        Group currentGroup = groups[indGroupPriority];
+                        if (currentGroup.IsMilitaryDay(day) || currentGroup.GetNumPairs(day) >= MAXPAIRS)
+                            continue;
+
+                        foreach (var lectory in lectories)
+                        {
+                            if(lectory.IsAvailable(day, pair))
+                            {
+                                Subject subjectToAssign = currentGroup.FindLecture();
+                                if(subjectToAssign != null)
+                                {
+                                    currentGroup.AssignLecture(day,pair, subjectToAssign);
+                                    lectory.Employment[day][pair] = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        foreach (var terminal in terminals)
+                        {
+                            if (terminal.IsAvailable(day, pair))
+                            {
+                                Subject practiceToAssign = currentGroup.FindPractice();
+                                if (practiceToAssign != null)
+                                {
+                                    currentGroup.AssignPractice(day, pair, practiceToAssign);
+                                    terminal.Employment[day][pair] = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
