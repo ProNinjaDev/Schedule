@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
 
 //Это снейк кейс ^-^
 namespace lab_work_inclass
@@ -29,6 +30,8 @@ namespace lab_work_inclass
 
             AllocMilitaryDepartment(groups);
             AllocLecturesAndPractices(groups, lectories, terminals);
+
+            GenerateScheduleReport("testReport.xlsx", groups, lectories, terminals);
         }
 
         static List<Lectoriy> InitializeLectories(int numLectRooms)
@@ -107,8 +110,6 @@ namespace lab_work_inclass
 
                 for(int pair = 0; pair < NUMPAIRS; pair++)
                 {
-                    // todo: Раскидать пары приоритетным группам
-
                     foreach(var indGroupPriority in priorities)
                     {
                         Group currentGroup = groups[indGroupPriority];
@@ -122,7 +123,7 @@ namespace lab_work_inclass
                                 Subject subjectToAssign = currentGroup.FindLecture();
                                 if(subjectToAssign != null)
                                 {
-                                    currentGroup.AssignLecture(day,pair, subjectToAssign);
+                                    currentGroup.AssignLecture(day,pair, subjectToAssign, lectory);
                                     lectory.Employment[day][pair] = true;
                                     break;
                                 }
@@ -136,7 +137,7 @@ namespace lab_work_inclass
                                 Subject practiceToAssign = currentGroup.FindPractice();
                                 if (practiceToAssign != null)
                                 {
-                                    currentGroup.AssignPractice(day, pair, practiceToAssign);
+                                    currentGroup.AssignPractice(day, pair, practiceToAssign, terminal);
                                     terminal.Employment[day][pair] = true;
                                     break;
                                 }
@@ -144,6 +145,82 @@ namespace lab_work_inclass
                         }
                     }
                 }
+            }
+        }
+
+        static void GenerateScheduleReport(string path, List<Group> groups, List<Lectoriy> lectories, List<Terminal> terminals)
+        {
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Расписание");
+
+                worksheet.Cell(1, 1).Value = " ";
+
+                List<string> days = new List<string>() { "Понедельник", "Вторник", "Среда",
+                    "Четверг", "Пятница", "Суббота", "Воскресенье" };
+
+                for (int day = 0; day < NUMDAYS; day++)
+                {
+                    worksheet.Cell(day * NUMPAIRS + 2, 1).Value = days[day];
+                    worksheet.Cell(day * NUMPAIRS + 2, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+                    worksheet.Range(day * NUMPAIRS + 2, 1, day * NUMPAIRS + NUMPAIRS + 1, 1).Merge();
+                    worksheet.Range(day * NUMPAIRS + 2, 1, day * NUMPAIRS + NUMPAIRS + 1, 1).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+
+                    for (int pair = 0; pair < NUMPAIRS; pair++)
+                    {
+                        worksheet.Cell(day * NUMPAIRS + pair + 2, 2).Value = $"{pair + 1} пара";
+                    }
+                }
+
+                int numAudience = 1;
+                // todo: Оптимизировать код
+                foreach(var lectory in lectories)
+                {
+                    worksheet.Cell(1, numAudience + 2).Value = $"Аудитория {numAudience} (лекторий)";
+                    numAudience++;
+                }
+                foreach (var terminal in terminals)
+                {
+                    worksheet.Cell(1, numAudience + 2).Value = $"Аудитория {numAudience} (терминал-класс)";
+                    numAudience++;
+                }
+                worksheet.Cell(1, numAudience + 2).Value = "Военная кафедра";
+
+                for(int day = 0; day < NUMDAYS; day++)
+                {
+                    for(int pair = 0; pair < NUMPAIRS; pair++) 
+                    { 
+                        foreach(var group in groups)
+                        {
+                            var lecture = group.GetLecture(day, pair);
+                            if (lecture != null)
+                            {
+                                var assignedLectory = group.GetAssignedLectory(day, pair);
+                                if (assignedLectory != -1)
+                                {
+                                    // Заполняем ячейку для лектория
+                                    worksheet.Cell(day * NUMPAIRS + pair + 2, assignedLectory + 2)
+                                             .Value = $"Группа {group.Number} {lecture}";
+                                }
+                            }
+
+                            var practice = group.GetPractice(day, pair);
+                            if (practice != null)
+                            {
+                                var assignedTerminal = group.GetAssignedTerminal(day, pair);
+                                if (assignedTerminal != -1)
+                                {
+                                    // Заполняем ячейку для терминала
+                                    worksheet.Cell(day * NUMPAIRS + pair + 2, assignedTerminal + lectories.Count + 2)
+                                             .Value = $"Группа {group.Number} {practice}";
+                                }
+                            }
+                        }
+                    }
+                }
+
+                workbook.SaveAs(path);
             }
         }
     }
