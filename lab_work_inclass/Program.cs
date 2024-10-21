@@ -17,9 +17,6 @@ namespace lab_work_inclass
         static void Main(string[] args)
         {
             int numGroups = 3;
-            int numSubjects = 10; // todo: Возможно, уже не нужен
-            int numLections = 10; // todo: Возможно, уже не нужен
-            int numPractics = 5; // todo: Возможно, уже не нужен
             int numLectRooms = 2;
             int numTermRooms = 1;
 
@@ -132,7 +129,7 @@ namespace lab_work_inclass
 
                         foreach (var terminal in terminals)
                         {
-                            if (terminal.IsAvailable(day, pair))
+                            if (terminal.IsAvailable(day, pair) && currentGroup.AssignedLectories[day][pair] == -1)
                             {
                                 Subject practiceToAssign = currentGroup.FindPractice();
                                 if (practiceToAssign != null)
@@ -199,7 +196,6 @@ namespace lab_work_inclass
                                 var assignedLectory = group.GetAssignedLectory(day, pair);
                                 if (assignedLectory != -1)
                                 {
-                                    // Заполняем ячейку для лектория
                                     worksheet.Cell(day * NUMPAIRS + pair + 2, assignedLectory + 2)
                                              .Value = $"Группа {group.Number} {lecture}";
                                 }
@@ -211,7 +207,6 @@ namespace lab_work_inclass
                                 var assignedTerminal = group.GetAssignedTerminal(day, pair);
                                 if (assignedTerminal != -1)
                                 {
-                                    // Заполняем ячейку для терминала
                                     worksheet.Cell(day * NUMPAIRS + pair + 2, assignedTerminal + lectories.Count + 2)
                                              .Value = $"Группа {group.Number} {practice}";
                                 }

@@ -49,7 +49,7 @@ namespace lab_work_inclass
             if (RemainingLectures[subject] > 0)
             {
                 Schedule[day][pair] = subject.Name;
-                AssignedLectories[day][pair] = lectory.Number; // Присваиваем аудиторию для лекции
+                AssignedLectories[day][pair] = lectory.Number;
                 RemainingLectures[subject]--;
             }
         }
@@ -59,7 +59,7 @@ namespace lab_work_inclass
             if (RemainingPractices[subject] > 0)
             {
                 Schedule[day][pair] = subject.Name;
-                AssignedTerminals[day][pair] = terminal.Number; // Присваиваем терминал для практики
+                AssignedTerminals[day][pair] = terminal.Number;
                 RemainingPractices[subject]--;
             }
         }
@@ -113,7 +113,6 @@ namespace lab_work_inclass
             return Schedule[day].Count(x => x != null);
         }
 
-        // todo: Переработать взятие лекций и практик из расписания
         public string GetLecture(int day, int pair)
         {
             return Schedule[day][pair];
