@@ -174,12 +174,12 @@ namespace lab_work_inclass
                 // todo: Оптимизировать код
                 foreach(var lectory in lectories)
                 {
-                    worksheet.Cell(1, numAudience + 2).Value = $"Аудитория {numAudience} (лекторий)";
+                    worksheet.Cell(1, numAudience + 2).Value = $"Аудитория {numAudience}\n(лекторий)";
                     numAudience++;
                 }
                 foreach (var terminal in terminals)
                 {
-                    worksheet.Cell(1, numAudience + 2).Value = $"Аудитория {numAudience} (терминал-класс)";
+                    worksheet.Cell(1, numAudience + 2).Value = $"Аудитория {numAudience}\n(терминал-класс)";
                     numAudience++;
                 }
                 worksheet.Cell(1, numAudience + 2).Value = "Военная кафедра";
@@ -197,7 +197,7 @@ namespace lab_work_inclass
                                 if (assignedLectory != -1)
                                 {
                                     worksheet.Cell(day * NUMPAIRS + pair + 2, assignedLectory + 2)
-                                             .Value = $"Группа {group.Number} {lecture}";
+                                             .Value = $"Группа {group.Number}\n{lecture}";
                                 }
                             }
 
@@ -208,11 +208,38 @@ namespace lab_work_inclass
                                 if (assignedTerminal != -1)
                                 {
                                     worksheet.Cell(day * NUMPAIRS + pair + 2, assignedTerminal + lectories.Count + 2)
-                                             .Value = $"Группа {group.Number} {practice}";
+                                             .Value = $"Группа {group.Number}\n{practice}";
                                 }
                             }
                         }
                     }
+
+                    foreach (var group in groups)
+                    {
+                        if (group.IsMilitaryDay(day))
+                        {
+                            worksheet.Range(day * NUMPAIRS + 2, numAudience + 2, day * NUMPAIRS + NUMPAIRS + 1, numAudience + 2).Merge();
+                            worksheet.Cell(day * NUMPAIRS + 2, numAudience + 2).Value = $"Группа {group.Number}";
+                            worksheet.Range(day * NUMPAIRS + 2, numAudience + 2, day * NUMPAIRS + NUMPAIRS + 1, numAudience + 2).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                            worksheet.Range(day * NUMPAIRS + 2, numAudience + 2, day * NUMPAIRS + NUMPAIRS + 1, numAudience + 2).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        }
+                    }
+
+                    for(int i = 1; i < numAudience + 4; i++)
+                    {
+                        worksheet.Column(i).AdjustToContents();
+                    }
+                    worksheet.Column(1).Width = 20;
+                    worksheet.Column(2).Width = 7;
+
+                    for (int i = 1; i < NUMDAYS * NUMPAIRS + 2; i++)
+                    {
+                        worksheet.Row(i).Height = 40;
+                    }
+
+                    worksheet.Cells().Style.Alignment.WrapText = true;
+                    worksheet.Cells().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    worksheet.Cells().Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                 }
 
                 workbook.SaveAs(path);
