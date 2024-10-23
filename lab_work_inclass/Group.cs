@@ -72,10 +72,6 @@ namespace lab_work_inclass
             }
         }
 
-        public bool IsFreeDay(int day)
-        {
-            return Schedule[day].Count == 0;
-        }
 
         public bool IsMilitaryDay(int day)
         {

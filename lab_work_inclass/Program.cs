@@ -94,18 +94,9 @@ namespace lab_work_inclass
             for(int day = 0; day < NUMDAYS; day++)
             {
                 // todo: Изменить способ расстановки приоритетов
-                Random rnd = new Random();
-                List<int> priorities = new List<int>();
-                for (int i = 0; i < groups.Count; i++)
-                {
-                    int priority;
-                    do priority = rnd.Next(groups.Count);
-                    while (priorities.Contains(priority));
+                List<int> priorities = GenerateGroupPriorities(groups.Count);
 
-                    priorities.Add(priority);
-                }
-
-                for(int pair = 0; pair < NUMPAIRS; pair++)
+                for (int pair = 0; pair < NUMPAIRS; pair++)
                 {
                     foreach(var indGroupPriority in priorities)
                     {
@@ -244,6 +235,23 @@ namespace lab_work_inclass
 
                 workbook.SaveAs(path);
             }
+        }
+
+        static List<int> GenerateGroupPriorities(int numGroups)
+        {
+            Random rnd = new Random();
+            List<int> priorities = new List<int>();
+
+            for (int i = 0; i < numGroups; i++)
+            {
+                int priority;
+                do priority = rnd.Next(numGroups);
+                while (priorities.Contains(priority));
+
+                priorities.Add(priority);
+            }
+
+            return priorities;
         }
     }
 }
