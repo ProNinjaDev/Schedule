@@ -14,7 +14,7 @@ namespace lab_work_inclass
 
         public Subject(string name, int numLectures, int numPractices) 
         {
-            this.Name = name;
+            Name = name;
             this.numLectures = numLectures;
             this.numPractices = numPractices;
         }

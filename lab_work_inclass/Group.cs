@@ -18,7 +18,7 @@ namespace lab_work_inclass
         public Dictionary<int, List<int>> AssignedTerminals { get; set; }
         public Group(int number, List<Subject> subjects) 
         {
-            this.Number = number;
+            Number = number;
 
             RemainingLectures = new Dictionary<Subject, int>();
             RemainingPractices = new Dictionary<Subject, int>();
