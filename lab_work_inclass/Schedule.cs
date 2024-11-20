@@ -182,8 +182,9 @@ namespace lab_work_inclass
                                 var assignedLectory = group.GetAssignedLectory(day, pair);
                                 if (assignedLectory != -1)
                                 {
+                                    string groupType = group.GetGroupType();
                                     worksheet.Cell(day * Program.NUMPAIRS + pair + 2, assignedLectory + 2)
-                                             .Value = $"Группа {group.Number}\n{lecture}";
+                                             .Value = $"Группа {group.Number} ({groupType})\n{lecture}";
                                 }
                             }
 
@@ -193,8 +194,9 @@ namespace lab_work_inclass
                                 var assignedTerminal = group.GetAssignedTerminal(day, pair);
                                 if (assignedTerminal != -1)
                                 {
+                                    string groupType = group.GetGroupType();
                                     worksheet.Cell(day * Program.NUMPAIRS + pair + 2, assignedTerminal + lectories.Count + 2)
-                                             .Value = $"Группа {group.Number}\n{practice}";
+                                             .Value = $"Группа {group.Number} ({groupType})\n{practice}";
                                 }
                             }
                         }

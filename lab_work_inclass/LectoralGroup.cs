@@ -37,7 +37,9 @@ namespace lab_work_inclass
 
         public override Subject FindPractice() => null;
 
-        public override bool CanAttendLecture() => true;
-        public override bool CanAttendPractice() => false;
+        public override string GetGroupType()
+        {
+            return "Л";
+        }
     }
 }

@@ -88,7 +88,7 @@ namespace lab_work_inclass
 
         public abstract Subject FindLecture();
         public abstract Subject FindPractice();
-        public abstract bool CanAttendLecture();
-        public abstract bool CanAttendPractice();
+
+        public abstract string GetGroupType();
     }
 }
