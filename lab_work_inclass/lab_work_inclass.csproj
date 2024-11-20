@@ -214,10 +214,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Group.cs" />
+    <Compile Include="LectoralGroup.cs" />
     <Compile Include="Lectoriy.cs" />
     <Compile Include="IAudience.cs" />
+    <Compile Include="PracticalGroup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegularGroup.cs" />
     <Compile Include="Schedule.cs" />
     <Compile Include="Subject.cs" />
     <Compile Include="Terminal.cs" />

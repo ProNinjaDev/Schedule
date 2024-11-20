@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lab_work_inclass
 {
-    internal class Group
+    internal abstract class Group
     {
         public int Number {  get; }
         public Dictionary<Subject, int> RemainingLectures { get; set; }
@@ -44,25 +44,8 @@ namespace lab_work_inclass
             }
         }
 
-        public void AssignLecture(int day, int pair, Subject subject, Lectoriy lectory)
-        {
-            if (RemainingLectures[subject] > 0)
-            {
-                Schedule[day][pair] = subject.Name;
-                AssignedLectories[day][pair] = lectory.Number;
-                RemainingLectures[subject]--;
-            }
-        }
-
-        public void AssignPractice(int day, int pair, Subject subject, Terminal terminal)
-        {
-            if (RemainingPractices[subject] > 0)
-            {
-                Schedule[day][pair] = subject.Name;
-                AssignedTerminals[day][pair] = terminal.Number;
-                RemainingPractices[subject]--;
-            }
-        }
+        public abstract void AssignLecture(int day, int pair, Subject subject, Lectoriy lectory);
+        public abstract void AssignPractice(int day, int pair, Subject subject, Terminal terminal);
 
         public void AssignMilitaryDay(int day)
         {
@@ -76,32 +59,6 @@ namespace lab_work_inclass
         public bool IsMilitaryDay(int day)
         {
             return Schedule[day].Contains("Военная подготовка");
-        }
-
-        public Subject FindLecture()
-        {
-            foreach (var dataLecture in RemainingLectures)
-            {
-                if(dataLecture.Value > 0)
-                {
-                    return dataLecture.Key;
-                }
-
-            }
-            return null;
-        }
-
-        public Subject FindPractice()
-        {
-            foreach (var dataPractice in RemainingPractices)
-            {
-                if (dataPractice.Value > 0)
-                {
-                    return dataPractice.Key;
-                }
-
-            }
-            return null;
         }
 
         public int GetNumPairs(int day)
@@ -128,5 +85,10 @@ namespace lab_work_inclass
         {
             return AssignedTerminals[day][pair];
         }
+
+        public abstract Subject FindLecture();
+        public abstract Subject FindPractice();
+        public abstract bool CanAttendLecture();
+        public abstract bool CanAttendPractice();
     }
 }

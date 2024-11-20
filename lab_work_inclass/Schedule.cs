@@ -63,7 +63,12 @@ namespace lab_work_inclass
             List<Group> groups = new List<Group>();
             for (int i = 0; i < numGroups; i++)
             {
-                groups.Add(new Group(i + 1, subjects));
+                if (i % 3 == 0)
+                    groups.Add(new RegularGroup(i + 1, subjects));
+                else if (i % 3 == 1)
+                    groups.Add(new LectoralGroup(i + 1, subjects));
+                else
+                    groups.Add(new PracticalGroup(i + 1, subjects));
             }
             return groups;
         }
