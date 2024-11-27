@@ -44,9 +44,6 @@ namespace lab_work_inclass
             }
         }
 
-        public abstract void AssignLecture(int day, int pair, Subject subject, Lectoriy lectory);
-        public abstract void AssignPractice(int day, int pair, Subject subject, Terminal terminal);
-
         public void AssignMilitaryDay(int day)
         {
             for(int pair = 0; pair < Program.MAXPAIRS; pair++)
@@ -86,8 +83,6 @@ namespace lab_work_inclass
             return AssignedTerminals[day][pair];
         }
 
-        public abstract Subject FindLecture();
-        public abstract Subject FindPractice();
 
         public abstract string GetGroupType();
     }

@@ -10,7 +10,7 @@ namespace lab_work_inclass
     {
         public LectoralGroup(int number, List<Subject> subjects) : base(number, subjects) { }
 
-        public override void AssignLecture(int day, int pair, Subject subject, Lectoriy lectory)
+        public void AssignLecture(int day, int pair, Subject subject, Lectoriy lectory)
         {
             if (RemainingLectures[subject] > 0)
             {
@@ -20,9 +20,8 @@ namespace lab_work_inclass
             }
         }
 
-        public override void AssignPractice(int day, int pair, Subject subject, Terminal terminal) { }
 
-        public override Subject FindLecture()
+        public Subject FindLecture()
         {
             foreach (var dataLecture in RemainingLectures)
             {
@@ -34,8 +33,6 @@ namespace lab_work_inclass
             }
             return null;
         }
-
-        public override Subject FindPractice() => null;
 
         public override string GetGroupType()
         {

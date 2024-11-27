@@ -99,30 +99,67 @@ namespace lab_work_inclass
                         if (currentGroup.IsMilitaryDay(day) || currentGroup.GetNumPairs(day) >= Program.MAXPAIRS)
                             continue;
 
-                        foreach (var lectory in lectories)
+                        if (currentGroup is LectoralGroup lectoralGroup)
                         {
-                            if (lectory.IsAvailable(day, pair))
+                            foreach (var lectory in lectories)
                             {
-                                Subject subjectToAssign = currentGroup.FindLecture();
-                                if (subjectToAssign != null)
+                                if (lectory.IsAvailable(day, pair))
                                 {
-                                    currentGroup.AssignLecture(day, pair, subjectToAssign, lectory);
-                                    lectory.Employment[day][pair] = true;
-                                    break;
+                                    Subject subjectToAssign = lectoralGroup.FindLecture();
+                                    if (subjectToAssign != null)
+                                    {
+                                        lectoralGroup.AssignLecture(day, pair, subjectToAssign, lectory);
+                                        lectory.Employment[day][pair] = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
 
-                        foreach (var terminal in terminals)
+                        if (currentGroup is PracticalGroup practicalGroup)
                         {
-                            if (terminal.IsAvailable(day, pair) && currentGroup.AssignedLectories[day][pair] == -1)
+                            foreach (var terminal in terminals)
                             {
-                                Subject practiceToAssign = currentGroup.FindPractice();
-                                if (practiceToAssign != null)
+                                if (terminal.IsAvailable(day, pair))
                                 {
-                                    currentGroup.AssignPractice(day, pair, practiceToAssign, terminal);
-                                    terminal.Employment[day][pair] = true;
-                                    break;
+                                    Subject subjectToAssign = practicalGroup.FindPractice();
+                                    if (subjectToAssign != null)
+                                    {
+                                        practicalGroup.AssignPractice(day, pair, subjectToAssign, terminal);
+                                        terminal.Employment[day][pair] = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (currentGroup is RegularGroup regularGroup)
+                        {
+                            foreach (var lectory in lectories)
+                            {
+                                if (lectory.IsAvailable(day, pair))
+                                {
+                                    Subject subjectToAssign = regularGroup.FindLecture();
+                                    if (subjectToAssign != null)
+                                    {
+                                        regularGroup.AssignLecture(day, pair, subjectToAssign, lectory);
+                                        lectory.Employment[day][pair] = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            foreach (var terminal in terminals)
+                            {
+                                if (terminal.IsAvailable(day, pair))
+                                {
+                                    Subject subjectToAssign = regularGroup.FindPractice();
+                                    if (subjectToAssign != null)
+                                    {
+                                        regularGroup.AssignPractice(day, pair, subjectToAssign, terminal);
+                                        terminal.Employment[day][pair] = true;
+                                        break;
+                                    }
                                 }
                             }
                         }

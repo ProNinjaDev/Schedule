@@ -10,9 +10,7 @@ namespace lab_work_inclass
     {
         public PracticalGroup(int number, List<Subject> subjects) : base(number, subjects) { }
 
-        public override void AssignLecture(int day, int pair, Subject subject, Lectoriy lectory) { }
-
-        public override void AssignPractice(int day, int pair, Subject subject, Terminal terminal)
+        public void AssignPractice(int day, int pair, Subject subject, Terminal terminal)
         {
             if (RemainingPractices[subject] > 0)
             {
@@ -22,9 +20,7 @@ namespace lab_work_inclass
             }
         }
 
-        public override Subject FindLecture() => null;
-
-        public override Subject FindPractice()
+        public Subject FindPractice()
         {
             foreach (var dataPractice in RemainingPractices)
             {
